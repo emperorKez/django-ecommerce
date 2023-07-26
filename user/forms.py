@@ -8,8 +8,8 @@ class RegisterForm():
         model = User
         fields = ['firstname', 'lastname', 'password1','password2','email','street','city','state','country','phone_number','zip_code','is_subscribed']
         widget = {
-            'firstname': forms.TextInput(attrs={'placeholder': 'First Name'}),
-            'firstname': forms.TextInput(attrs={'placeholder': 'First Name'}),
+            # 'firstname': forms.TextInput(attrs={'placeholder': 'First Name'}),
+            # 'firstname': forms.TextInput(attrs={'placeholder': 'First Name'}),
             'email': forms.TextInput(attrs={'placeholder': 'Email'}),
             'street': forms.TextInput(attrs={'placeholder': 'Street'}),
             'city': forms.TextInput(attrs={'placeholder': 'City'}),

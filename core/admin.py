@@ -1,7 +1,7 @@
 # from datetime import time
 # import datetime
 from django.contrib import admin
-from core.models import Product, Category
+from core.models import Product, Category, ProductImage
 from import_export.admin import ImportExportModelAdmin
 # from time import strftime
 
@@ -12,12 +12,16 @@ from import_export.admin import ImportExportModelAdmin
 # # date_format.admin_order_field = 'date_created'
 # # time_seconds.short_description = 'Precise Time'
 
+class InlineImage(admin.TabularInline):
+    model = ProductImage
+
 class ProductAdmin(ImportExportModelAdmin):
     search_fields = ['email', 'product_id', 'name']
     list_display = ['product_id', 'name', 'description', 'category', 'date_created']
     list_editable = ['category']
     list_filter = ['category']
     list_display_links = ['product_id']
+    inlines = [InlineImage]
     
 class CategoryAdmin(admin.ModelAdmin):
     search_fields = ['name']
