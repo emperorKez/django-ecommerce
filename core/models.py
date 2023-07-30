@@ -17,6 +17,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2, null=False)
     quantity = models.DecimalField(max_digits=3, decimal_places=0)
     description = models.TextField(blank=False, null=False)
+    image = models.OneToOneField('ProductImage', on_delete=models.DO_NOTHING, related_name='images', null=True)
     date_created = models.DateField(auto_now_add=True, verbose_name='Date Created')
     date_updated = models.DateField(auto_now_add=True, verbose_name='Date Updated')
         
@@ -30,10 +31,11 @@ class Category(models.Model):
     name = models.CharField(max_length=75, blank=False, null=False, editable=True,)
     parent = models.ForeignKey('Category', on_delete=models.DO_NOTHING, blank=True, null=True, related_name='parent_category')
     description = models.TextField(blank=True, null=True)
-    tumbnail = models.ImageField(upload_to='category', editable=True, blank=True, null=True)
+    thumbnail = models.ImageField(upload_to='category', editable=True, blank=True, null=True)
     slug = AutoSlugField(populate_from='name', unique_with='id', slugify=custom_slugify)
     date_created = models.DateField(auto_now_add=True, verbose_name='Date Created')
     date_updated = models.DateField(auto_now=True, verbose_name='Date Updated')
+    
     
     class Meta:
         verbose_name_plural = 'Categories'
