@@ -32,18 +32,38 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # installed apps
+    'ckeditor',
+    'ckeditor_uploader',
     'import_export',
+    'sorl.thumbnail',
     
     #custom apps
+    'vendor',
     'core',
     'user',
+    'cms',
+    'marketing',
+    'report',
+    'dashboard'
+    
+]
+
+APP_REORDER = [
     'vendor',
+    'core',
+    'user',
+    'cms',
+    'marketing',
+    'reports'
 ]
 
 MIDDLEWARE = [
@@ -54,6 +74,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'admin_reorder.middleware.ModelAdminReorder',
 ]
 
 ROOT_URLCONF = 'ecommerce.urls'
@@ -61,7 +82,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,22 +148,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# STATIC_ROOT = '/home/emperor/projects/django/ecommerce/static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-
-# if DEBUG:
-#         STATICFILES_DIRS = [
-#             os.path.join(BASE_DIR, 'static')
-#        ]
-# else:
-#     STATIC_ROOT = os.path.join(BASE_DIR, 'static')    
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -155,4 +167,51 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
 LOGIN_URL = 'user:login'
 LOGIN_REDIRECT_URL = 'user:login'
-LOGOUT_REDIRECT_URL = 'user:login' 
+LOGOUT_REDIRECT_URL = 'user:login'
+
+ADMIN_REORDER = (
+    # Keep original label and models
+    {'app': 'vendor', 'models': ('vendor.Vendor', 'vendor.VendorProduct')},
+    'core',
+    'user',
+    'cms',
+    'marketing',
+    'reports',
+
+    # # Rename app
+    # {'app': 'vendor', 'label': 'Authorisation'},
+
+    # Reorder app models
+    # {'app': 'vendor', 'models': ('vendor.Vendor', 'vendor.VendorProduct')},
+
+    # # Exclude models
+    # {'app': 'auth', 'models': ('auth.User', )},
+
+    # # Cross-linked models
+    # {'app': 'auth', 'models': ('auth.User', 'sites.Site')},
+
+    # # models with custom name
+    # {'app': 'auth', 'models': (
+    #     'auth.Group',
+    #     {'model': 'auth.User', 'label': 'Staff'},
+    # )},
+    
+)
+
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'basic',
+        # 'toolbar': 'full',
+        # 'height': 300,
+        # 'width': 300,
+        # 'extraPlugins': 'image2',
+        # 'image_previewText': True,
+        # 'filebrowserImageThumbWidth': 300,
+        # 'filebrowserImageThumbHeight': 300,
+        # 'filebrowserUploadUrl': '/ckeditor/upload/',
+    },
+}
+CKEDITOR_UPLOAD_PATH = 'content/'
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+# CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"

@@ -23,5 +23,13 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
-    path('user/', include('user.urls'))
+    path('user/', include('user.urls')),
+    path('dashboard/', include('dashboard.urls')),
+    path('cms/', include('cms.urls')),
+    path('vendor/', include('vendor.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+admin.site.index_title = 'Django Ecommerce'
+admin.site.site_header = 'Django Multivendor Ecommerce'
+admin.site.site_title = 'Ecommerce'

@@ -1,10 +1,12 @@
 from django.contrib import admin
+from core.models import ProductImage
 from  vendor.models import Vendor, VendorProduct
 from import_export.admin import ImportExportModelAdmin
 
 # class InlineImage(admin.TabularInline):
 #     model = ProductImage
 
+@admin.register(Vendor)
 class VendorAdmin(admin.ModelAdmin):
     pass
     search_fields = ['vendor_id', 'user__email', 'shop_name']
@@ -27,9 +29,10 @@ class VendorAdmin(admin.ModelAdmin):
     get_last_login.admin_order_field = 'user__email'
     get_last_login.short_description ='last Login'
     
+@admin.register(VendorProduct)
 class VendorProductAdmin(ImportExportModelAdmin):
     search_fields = ['product__product_id']
-    list_display = ['id', 'get_name', 'get_product_id', 'get_category', 'get_price', 'get_thumbnail', 'get_date_updated']
+    list_display = ['id', 'get_thumbnail', 'get_product_id', 'get_name', 'get_price', 'get_category', 'get_date_created', 'get_date_updated']
     list_filter = ['product__category', 'quantity_sold']
     
     def get_name(self, object):
@@ -53,9 +56,15 @@ class VendorProductAdmin(ImportExportModelAdmin):
     get_price.short_description ='Price'
     
     def get_thumbnail(self, object):
-        return object.product.thumbnail
-    get_thumbnail.admin_order_field = 'product__thumbnail'
-    get_thumbnail.short_description ='Thumbnail'
+        image= ProductImage.objects.filter(product=object.product).first()
+        return image.image_preview
+        # pass
+    get_thumbnail.short_description ='Image'
+    
+    def get_date_created(self, object):
+        return object.product.date_created
+    get_date_created.admin_order_field = 'product__date_created'
+    get_date_created.short_description ='Date created'
     
     def get_date_updated(self, object):
         return object.product.date_updated
@@ -65,5 +74,6 @@ class VendorProductAdmin(ImportExportModelAdmin):
 
 
 
-admin.site.register(Vendor, VendorAdmin)
-admin.site.register(VendorProduct, VendorProductAdmin)
+
+# admin.site.register(Vendor, VendorAdmin)
+# admin.site.register(VendorProduct, VendorProductAdmin)
